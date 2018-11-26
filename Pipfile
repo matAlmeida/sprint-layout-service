@@ -8,7 +8,6 @@ numpy = "*"
 networkx = "*"
 flask = "*"
 flask_restful = "*"
-gunicorn = "*"
 
 [dev-packages]
 
