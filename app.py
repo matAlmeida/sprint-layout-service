@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 from flask_restful import Resource, Api
 from routes.graphPosition import graphPosition
@@ -40,4 +41,8 @@ def index():
 api.add_resource(graphPosition, '/graph')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = os.environ['PORT']
+    if port == None:
+        app.run(debug=True)
+    else:
+        app.run(port=port)
