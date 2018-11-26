@@ -1,3 +1,4 @@
+import json
 from flask import request
 from flask_restful import Resource
 import networkx as nx
@@ -28,11 +29,13 @@ class graphPosition(Resource):
                 "links": []
             }
         ]
-        return {
+        ret = {
             "message": "Make a POST to this URL with the following format and passing the max size eg: url/graph?size=9",
             "request-format": request_format,
             "response-format": response_format
         }
+
+        return json.dumps(ret, separators=(',', ':'))
 
     def post(self):
         G = nx.Graph()
@@ -66,4 +69,6 @@ class graphPosition(Resource):
             node['links'] = cleanLinks
             retArray.append(node)
 
-        return {"message": retArray}
+        ret = {"message": retArray}
+
+        return json.dumps(ret, separators=(',', ':'))

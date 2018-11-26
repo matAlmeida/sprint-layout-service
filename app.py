@@ -1,3 +1,4 @@
+import json
 from flask import Flask
 from flask_restful import Api
 from routes.graphPosition import graphPosition
@@ -6,11 +7,13 @@ app = Flask(__name__)
 api = Api(app)
 
 
-@app.route('/', method=['GET'])
+@app.route('/')
 def index():
-    return {
+    ret = {
         "message": "Go to /graph"
     }
+
+    return json.dumps(ret, separators=(',', ':'))
 
 
 api.add_resource(graphPosition, '/graph')
