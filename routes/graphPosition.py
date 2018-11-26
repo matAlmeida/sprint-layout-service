@@ -1,5 +1,4 @@
-import json
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 import networkx as nx
 import math as mt
@@ -35,7 +34,7 @@ class graphPosition(Resource):
             "response-format": response_format
         }
 
-        return json.dumps(ret, separators=(',', ':'))
+        return jsonify(ret)
 
     def post(self):
         G = nx.Graph()
@@ -71,4 +70,4 @@ class graphPosition(Resource):
 
         ret = {"message": retArray}
 
-        return json.dumps(ret, separators=(',', ':'))
+        return jsonify(ret)
