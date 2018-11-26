@@ -1,0 +1,5 @@
+gunicorn
+numpy
+networkx
+flask
+flask_restful
