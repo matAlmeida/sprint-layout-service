@@ -13,29 +13,23 @@ class graphPosition(Resource):
         ]
         response_format = [
             {
-                "label": "1",
-                "pos": {
-                    "x": 6,
-                    "y": 0
-                }
+                "label": 1,
+                "pos": [6, 0],
+                "links": [2, 3]
             },
             {
-                "label": "2",
-                "pos": {
-                    "x": 9,
-                    "y": 8
-                }
+                "label": 2,
+                "pos": [9, 8],
+                "links": [3]
             },
             {
-                "label": "3",
-                "pos": {
-                    "x": 1,
-                    "y": 7
-                }
+                "label": 3,
+                "pos": [1, 7],
+                "links": []
             }
         ]
         return {
-            "message": "Make a POST to this URL with the following format",
+            "message": "Make a POST to this URL with the following format and passing the max size eg: url/graph?size=9",
             "request-format": request_format,
             "response-format": response_format
         }
@@ -43,10 +37,11 @@ class graphPosition(Resource):
     def post(self):
         G = nx.Graph()
         jsonNodes = request.get_json()
+        max_size = float(request.args.get('size'))
+        max_size /= 2
         nodes = []
         edges = []
         for node in jsonNodes:
-            # print(node)
             label = node['label']
             links = node['links']
             nodes.append(label)
@@ -56,17 +51,19 @@ class graphPosition(Resource):
 
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
-        pos = nx.spring_layout(G, scale=4.5)
+        pos = nx.spring_layout(G, scale=max_size)
 
         retArray = []
 
         for i in pos:
-            x = mt.ceil(float(pos[i][0]) + 4.5)
-            y = mt.ceil(float(pos[i][1]) + 4.5)
+            x = mt.ceil(float(pos[i][0]) + max_size)
+            y = mt.ceil(float(pos[i][1]) + max_size)
 
             node = {}
-            node['label'] = str(i)
-            node['pos'] = {"x": x, "y": y}
+            cleanLinks = [link for link in links if link > i]
+            node['label'] = i
+            node['pos'] = [x, y]
+            node['links'] = cleanLinks
             retArray.append(node)
 
         return {"message": retArray}
