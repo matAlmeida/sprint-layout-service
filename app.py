@@ -7,7 +7,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
-@app.route('/')
+@app.route('/', method=['GET'])
 def index():
     return {
         "message": "Go to /graph"
@@ -21,4 +21,5 @@ if __name__ == '__main__':
     if port is None:
         app.run(debug=True)
     else:
-        app.run(port=port)
+        print('running port {0}'.format(port))
+        app.run(debug=True, use_reloader=True, port=port)
